@@ -1,5 +1,5 @@
 import * as React from 'react'
-// import Inspector from './components/Inspector';
+import Inspector from './components/Inspector';
 import Page from './components/Page';
 import Element from './components/Elements'
 import styled from 'styled-components'

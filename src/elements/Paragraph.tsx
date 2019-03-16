@@ -1,18 +1,18 @@
 import * as React from 'react'
-import ElementContainer from '../containers/ElementContainer'
-import {Subscribe} from 'unstated'
 import styled from 'styled-components'
+import {EnhancedElement} from './enhancedElement'
+import ElementContainer from 'src/containers/ElementContainer';
 
 const $input = styled.input`
 	border: 1px solid red;
     padding: 5px;
 `
 export interface Props {
-    data: {
-        text?: string
-    }
+    container: ElementContainer
+    data?: any
 }
-class Paragraph extends React.Component<Props, {}> {
+
+class Paragraph extends React.Component<Props, any> {
     focused: boolean = false
     inputRef: HTMLInputElement | null
     handleBlur = () => {
@@ -24,17 +24,13 @@ class Paragraph extends React.Component<Props, {}> {
     }
     
     render() {
-        const {data} = this.props
+        const { container, data } = this.props
         return (
-            <Subscribe to={ [ElementContainer] }>
-                { (container: ElementContainer) => (
-                    <$input ref={ e => (this.inputRef = e)} defaultValue={ data.text } onChange={ (e) => {
-                        // container.setData(e.target.value) 
-                    }} onBlur={ this.handleBlur } onFocus={ this.handleFocus }/>
-                )}
-            </Subscribe>
+                <$input defaultValue={ data.text } ref={ e => (this.inputRef = e)} onChange={ (e) => {
+                    container.setData({key: "text", value: e.target.value}) 
+                }} onBlur={ this.handleBlur } onFocus={ this.handleFocus }/>
         )
     }
 }
 
-export default Paragraph
+export default EnhancedElement(Paragraph)
