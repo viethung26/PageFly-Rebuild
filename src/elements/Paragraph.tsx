@@ -17,6 +17,7 @@ export interface Props {
 class Paragraph extends React.Component<Props, any> {
     focused: boolean = false
     inputRef: HTMLInputElement | null
+
     handleBlur = () => {
         this.focused = false
     }
@@ -24,15 +25,18 @@ class Paragraph extends React.Component<Props, any> {
     handleFocus = () => {
         this.focused = true
     }
+    componentDidUpdate(prevProps: Props, prevState: any) {
+        if(!this.focused && this.inputRef) this.inputRef.value = this.props.data.text
+    }
     
     render() {
         const { container, data, mouseDown } = this.props
         return (
-                <$input defaultValue={ data.text } ref={ e => (this.inputRef = e)} onChange={ (e) => {
-                    container.setData({key: "text", value: e.target.value})
+                <$input className = {container.state.selector} defaultValue={ data.text } ref={ e => (this.inputRef = e)} onChange={ (e) => {
+                    container.setData({text: e.target.value})
                 }} onBlur={ this.handleBlur } onFocus={ this.handleFocus }
                 onDropCapture={ e => this.props.onDrop(e, container)}
-                onMouseDown = { ()=> mouseDown(container) }
+                onMouseDown = { (e)=> mouseDown(e,container) }
                 />
         )
     }

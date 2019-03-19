@@ -1,12 +1,17 @@
 import {Container} from 'unstated'
 import {v1 as uuid} from 'uuid' 
 import StyleContainer from './StyleContainer';
+import { PageContainer } from './PageContainer';
 export interface ElementState {
     id: string | number
     type: string
-    data: {}
+    data: {
+        text?: string
+    }
     children: string[]
-    style?: string
+    style?: string,
+    selector?: string
+    pageContainer?: PageContainer
 }
 
 declare global {
@@ -16,6 +21,9 @@ declare global {
 }
 
 class ElementContainer extends Container<ElementState> {
+    get styleInstance(): CSSStyleSheet | undefined | null {
+        return this.state.pageContainer && this.state.pageContainer.StyleInstance
+    }
 
     static Instance: Map<string, ElementContainer> = new Map()
 
@@ -25,13 +33,30 @@ class ElementContainer extends Container<ElementState> {
 
     static Selected: ElementContainer | null = null
 
-    setStyle = ( attr: {} ) => {
-        console.log(attr, this)
+    getStyle(): CSSStyleDeclaration | null {
+        const selector = `.${this.state.selector}`
+        if(this.styleInstance) {
+            const cssRules = Array.from(this.styleInstance.cssRules)
+            let rule = cssRules.find((rule: CSSStyleRule) => rule.selectorText === selector) as CSSStyleRule
+            if(!rule) {
+                const index = this.styleInstance.insertRule(`${selector} {}`, cssRules.length)
+                rule = this.styleInstance.cssRules[index] as CSSStyleRule
+            }
+            return rule.style
+        }
+        return null
     }
 
-    setData = (data: any) => {
-        const { key, value } = data
-        this.setState({[key]: value})
+    setStyle = ( attr: {} ) => {
+        const currentStyle = this.getStyle()
+        Object.assign(currentStyle, attr)
+    }
+
+    setData = (newData: object) => {
+        let {data} = this.state
+        const key = Object.keys(newData).toString()
+        data[key] = newData[key]
+        this.setState({data})
     }
     
     constructor(state: ElementState) {

@@ -18,7 +18,7 @@ class Button extends React.Component<ButtonProps, any> {
     render() {
         const { data, container, children, mouseDown } = this.props
         return (
-            <$Button onDropCapture={ e => this.props.onDrop(e, container)} onMouseDown={ () => mouseDown(container) } > 
+            <$Button className={ container.state.selector } onDropCapture={ e => this.props.onDrop(e, container)} onMouseDown={ (e) => mouseDown(e,container) } > 
                 { data.text }
                 { children }
             </$Button>

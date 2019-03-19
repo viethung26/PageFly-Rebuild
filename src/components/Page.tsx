@@ -12,14 +12,14 @@ declare global {
 }
 const $Page = styled.div`
     border: 1px solid red;
-    height: 200px;
-    width: 300px;
+    height: 400px;
+    width: 500px;
 `
 
-const PageContainer: ElementContainer = new PContainer({
+const PageContainer: PContainer = new PContainer({
     id: uuid(), 
     type: "Page",
-    data: [],
+    data: {},
     children: [],
 })
 window.PageContainer = PageContainer
@@ -34,7 +34,7 @@ class Page extends React.Component {
             text: "test"
         }
         const elementContainer = new ElementContainer({
-            id, type, data, children: []
+            id, type, data, children: [], selector: uuid().substr(0, 5), pageContainer: PageContainer
         })
         parent.appendChild(id)
     

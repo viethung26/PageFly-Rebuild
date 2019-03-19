@@ -5,8 +5,7 @@ import Element from './components/Elements'
 import styled from 'styled-components'
 
 const $App = styled.div`
-	display: grid;
-	grid-template-columns: 100px 1fr 100px;
+	display: flex;
 `
 
 class App extends React.Component {
