@@ -1,10 +1,10 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import Catalogue from './Catalogue'
 import {v1 as uuid} from 'uuid'
 import ElementContainer from '../containers/ElementContainer'
 import {Subscribe} from 'unstated'
 import {renderElement} from './renderElement'
+import {PageContainer as PContainer} from '../containers/PageContainer'
 declare global {
     interface Window {
         PageContainer: any
@@ -16,17 +16,17 @@ const $Page = styled.div`
     width: 300px;
 `
 
-const PageContainer: ElementContainer = new ElementContainer({
+const PageContainer: ElementContainer = new PContainer({
     id: uuid(), 
     type: "Page",
     data: [],
-    children: []
+    children: [],
 })
 window.PageContainer = PageContainer
 
 export const PageContext = React.createContext(PageContainer)
 
-class Page extends React.PureComponent {
+class Page extends React.Component {
     handleDrop = (e: any, parent: ElementContainer) => {
         const id = uuid()
         const type = e.dataTransfer.getData("type")

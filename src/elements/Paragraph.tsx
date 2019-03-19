@@ -10,6 +10,8 @@ const $input = styled.input`
 export interface Props {
     container: ElementContainer
     data?: any
+    onDrop: any
+    mouseDown: any
 }
 
 class Paragraph extends React.Component<Props, any> {
@@ -24,11 +26,14 @@ class Paragraph extends React.Component<Props, any> {
     }
     
     render() {
-        const { container, data } = this.props
+        const { container, data, mouseDown } = this.props
         return (
                 <$input defaultValue={ data.text } ref={ e => (this.inputRef = e)} onChange={ (e) => {
-                    container.setData({key: "text", value: e.target.value}) 
-                }} onBlur={ this.handleBlur } onFocus={ this.handleFocus }/>
+                    container.setData({key: "text", value: e.target.value})
+                }} onBlur={ this.handleBlur } onFocus={ this.handleFocus }
+                onDropCapture={ e => this.props.onDrop(e, container)}
+                onMouseDown = { ()=> mouseDown(container) }
+                />
         )
     }
 }

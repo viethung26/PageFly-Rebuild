@@ -15,7 +15,7 @@ class App extends React.Component {
 			<$App>
 				<Element />
 				<Page />	
-				{/* <Inspector /> */}
+				<Inspector />
 			</$App>
 			
 		)

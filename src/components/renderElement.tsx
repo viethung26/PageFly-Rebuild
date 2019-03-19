@@ -2,8 +2,10 @@ import * as React from 'react'
 import Catalogue from './Catalogue'
 import {v1 as uuid} from 'uuid'
 import ElementContainer from '../containers/ElementContainer'
+import { Subscribe } from 'unstated';
 
 const handleDrop = (e: any, parent: ElementContainer) => {
+    e.stopPropagation()
     const id = uuid()
     const type = e.dataTransfer.getData("type")
     const data = {
@@ -22,10 +24,13 @@ export const renderElement = (id: string) => {
     const { children } = container.state
     const $Element = Catalogue[container.state.type]
     return (
-        <$Element key={ id } elementContainer = { container }
-        onDrop={ (e: Event) => handleDrop( e, container) } onDragOver={ (e: Event) => {e.preventDefault()} } 
-        >
-            { children.map(childId => renderElement(childId)) }
-        </$Element>
+        <Subscribe key={ id } to={ [container] }>
+            {eContainer => (
+                <$Element elementContainer = { eContainer } onDrop={ handleDrop } onDragOver={ (e: Event) => {e.preventDefault()} } >
+                    { children.map(childId => renderElement(childId as string)) }
+                </$Element>        
+            )}
+        </Subscribe>
+        
     )
 }
