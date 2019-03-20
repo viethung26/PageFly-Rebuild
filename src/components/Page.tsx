@@ -33,8 +33,8 @@ class Page extends React.Component {
         const data = {
             text: "test"
         }
-        const elementContainer = new ElementContainer({
-            id, type, data, children: [], selector: uuid().substr(0, 5), pageContainer: PageContainer
+        new ElementContainer({
+            id, type, data, children: [], selector: "pf" + uuid().substr(0, 5), pageContainer: PageContainer
         })
         parent.appendChild(id)
     

@@ -11,8 +11,8 @@ const handleDrop = (e: any, parent: ElementContainer) => {
     const data = {
         text: "test"
     }
-    const elementContainer = new ElementContainer({
-        id, type, data, children: []
+    new ElementContainer({
+        id, type, data, children: [], selector: "pf" + uuid().substr(0, 5), pageContainer: parent.state.pageContainer
     })
     parent.appendChild(id)
 
