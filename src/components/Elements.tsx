@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import Catalogue from './Catalogue'
-
+import Catalogue from '../modules/Catalogue'
+import {catalogueIndex} from '../modules/templateStores'
 const $List = styled.div`
     border: 2px solid #ddd;
     border-radius: 10px;
@@ -25,8 +25,8 @@ class Elements extends React.Component {
 
     listElements = () => {
         const elements = []
-        for (const key in Catalogue) {
-            elements.push(<$Element key={ key } draggable={ true } onDragStart={ (e) => this.handleDrag(e, key) }>{ key }</$Element>)
+        for (const value of catalogueIndex) {
+            elements.push(<$Element key={ value } draggable={ true } onDragStart={ (e) => this.handleDrag(e, value) }>{ value }</$Element>)
         }
         return elements
     }

@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { EnhancedElement, EnhancedElement2 } from './enhancedElement';
 import ElementContainer from 'src/containers/ElementContainer';
+import { registryToTemplateStores } from 'src/modules/templateStores';
 
 const $Layout = styled.div`
     box-sizing: border-box;
@@ -33,5 +34,17 @@ class Layout extends React.Component<LayoutProps, any> {
         )
     }
 }
+
+registryToTemplateStores({
+    name: "Layout",
+    items: [
+        {
+            type: "Layout",
+            id: 0,
+            data: {},
+            children: []
+        }
+    ]
+})
 
 export default EnhancedElement(Layout)

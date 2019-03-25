@@ -2,6 +2,7 @@ import {Container} from 'unstated'
 import {v1 as uuid} from 'uuid' 
 import StyleContainer from './StyleContainer';
 import { PageContainer } from './PageContainer';
+import { PageContainer as PContainer} from '../components/Page'
 import { Stores } from 'src/modules/templateStores';
 export interface ElementState {
     id: string
@@ -35,7 +36,9 @@ class ElementContainer extends Container<ElementState> {
     newElementContainer = (type: string, data: {}): string => {
         const id = uuid()
         new ElementContainer({
-            id, type, data, children: []
+            id, type, data, children: [], 
+            selector: "pf-hiki-"+ id.split("-")[0],
+            pageContainer: PContainer
         })
         this.appendChild(id)
         return id
@@ -100,6 +103,15 @@ class ElementContainer extends Container<ElementState> {
         const {children} = this.state
         children.push(id)
         this.setState({children})
+    }
+
+    removeChild = (id: string) => {
+        const {children} = this.state
+        const index = children.findIndex(child => child === id)
+        if(index !== -1) {
+            children.splice(index, 1)
+            this.setState({children})
+        }
     }
     // setData(text: string) {
         // this.setState()

@@ -8,9 +8,6 @@ export interface TextProps {
 }
 
 class Text extends React.Component<TextProps> {
-    componentDidMount() {
-        console.log("props", this.props)
-    }
     render() {
         return (
             <$Text>{this.props.data.value}</$Text>

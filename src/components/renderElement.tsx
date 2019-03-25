@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Catalogue from './Catalogue'
+import Catalogue from '../modules/Catalogue'
 import {v1 as uuid} from 'uuid'
 import ElementContainer from '../containers/ElementContainer'
 import { Subscribe } from 'unstated';

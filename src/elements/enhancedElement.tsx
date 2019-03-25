@@ -21,7 +21,8 @@ export const EnhancedElement = (Element: React.ClassType<any, any, any>) => {
         render() {
             const instance = super.render()
             const extraProps = {
-                className: "test",
+                className: this.container.state.selector,
+                "data-element": this.container.state.id,
                 draggable: true,
                 container: this.container,
                 value: this.container.state.data.value

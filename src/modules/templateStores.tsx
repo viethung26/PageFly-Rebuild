@@ -17,3 +17,7 @@ export const Stores: Map<string, TemplateData> = new Map()
 export const registryToTemplateStores = (template: TemplateData) => {
     Stores.set(template.name, template)
 }
+
+export const catalogueIndex = [
+    "Layout", "Button", "Paragraph"
+]
