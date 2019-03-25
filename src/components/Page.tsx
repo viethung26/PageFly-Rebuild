@@ -5,13 +5,16 @@ import ElementContainer from '../containers/ElementContainer'
 import {Subscribe} from 'unstated'
 import {renderElement} from './renderElement'
 import {PageContainer as PContainer} from '../containers/PageContainer'
+import { Stores } from '../modules/templateStores'
 declare global {
     interface Window {
         PageContainer: any
     }
 }
 const $Page = styled.div`
-    border: 1px solid red;
+    border: 3px solid #ddd;
+    border-radius: 15px;
+    padding: 10px;
     height: 400px;
     width: 500px;
 `
@@ -27,17 +30,15 @@ window.PageContainer = PageContainer
 export const PageContext = React.createContext(PageContainer)
 
 class Page extends React.Component {
-    handleDrop = (e: any, parent: ElementContainer) => {
-        const id = uuid()
-        const type = e.dataTransfer.getData("type")
-        const data = {
-            text: "test"
+    handleDrop = (e: any, parentID: string) => {
+        const isNew = e.dataTransfer.getData("isNew") === "true"
+        if(isNew) {
+            const name = e.dataTransfer.getData("type")
+            ElementContainer.newElements(name, 0, parentID)
+        } else {
+            console.log("old")
         }
-        new ElementContainer({
-            id, type, data, children: [], selector: "pf" + uuid().substr(0, 5), pageContainer: PageContainer
-        })
-        parent.appendChild(id)
-    
+            
     }
 
     render() {
@@ -46,7 +47,7 @@ class Page extends React.Component {
                 {pageContainer => (
                     <Subscribe to={ [pageContainer] }>
                         {(container: ElementContainer) => (
-                            <$Page onDrop={ e => this.handleDrop( e, container) } onDragOver={ e => e.preventDefault() } >
+                            <$Page onDrop={ e => this.handleDrop( e, container.state.id) } onDragOver={ e => e.preventDefault() } >
                                 { container.state.children.map(childId => renderElement(childId)) }
                             </$Page>
                         )}

@@ -12,8 +12,28 @@ declare global {
     }
 }
 
-export const EnhancedElement = (WrappedComponent: React.ClassType<any, any, any>) => {
+
+export const EnhancedElement = (Element: React.ClassType<any, any, any>) => {
+    return class extends Element {
+        get container() {
+            return this.props.elementContainer as ElementContainer
+        }  
+        render() {
+            const instance = super.render()
+            const extraProps = {
+                className: "test",
+                draggable: true,
+                container: this.container,
+                value: this.container.state.data.value
+            }
+            return React.cloneElement(instance, extraProps)
+        }
+    }
+}
+
+export const EnhancedElement2 = (WrappedComponent: React.ClassType<any, any, any>) => {
     class NewComponent extends React.Component<Props, any> {
+
         handleMouseDown = (e: Event, selected: ElementContainer | null) => {
             e.stopPropagation()
             ElementContainer.Selected = selected

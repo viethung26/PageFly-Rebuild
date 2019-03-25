@@ -2,11 +2,12 @@ import {Container} from 'unstated'
 import {v1 as uuid} from 'uuid' 
 import StyleContainer from './StyleContainer';
 import { PageContainer } from './PageContainer';
+import { Stores } from 'src/modules/templateStores';
 export interface ElementState {
-    id: string | number
+    id: string
     type: string
     data: {
-        text?: string
+        value?: string
     }
     children: string[]
     style?: string,
@@ -30,6 +31,30 @@ class ElementContainer extends Container<ElementState> {
     static get(id: string): ElementContainer | undefined {
         return this.Instance.get(id)
     }
+
+    newElementContainer = (type: string, data: {}): string => {
+        const id = uuid()
+        new ElementContainer({
+            id, type, data, children: []
+        })
+        this.appendChild(id)
+        return id
+    }
+    static newElements = (name: string, childID: number, pID: string) => {
+        if(!Stores.has(name)) return
+        const pContainer = ElementContainer.Instance.get(pID)
+        const Store = Stores.get(name)
+        if(Store && pContainer) {
+            const items = Store.items            
+            const currentItem = items.find(item => item.id === childID)
+            if(currentItem) {
+                const newID = currentItem && pContainer.newElementContainer(currentItem.type, currentItem.data)
+                currentItem.children.forEach(id => ElementContainer.newElements(name, id, newID))
+            }
+            
+        }
+    }
+
 
     static Selected: ElementContainer | null = null
 
